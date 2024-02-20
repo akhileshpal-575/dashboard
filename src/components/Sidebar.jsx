@@ -1,39 +1,43 @@
-import React, { createContext, useContext, useState } from 'react'
-import {Menu} from 'lucide-react'
+import React, { useState } from "react";
+import {LayoutDashboard,Menu,UserCircle}from "lucide-react"
 import LOGO  from "../assets/images/LOGO.png"
+import { NavLink } from "react-router-dom";
 
- const SidebarContext = createContext()
+function Sidebar({children}){
+  const [expanded,setExpanded] = useState(true)
 
-function Sidebar({children}) {
-    const [expanded,setExpanded] = useState(true)
-  return (
-    <>
-    <aside className='h-screen'>
-        <nav className='h-full flex flex-col bg-[#e2e8f0] border-r shadow-sm'>
-            <div className='p-4 pb-2 flex justify-between items-center'>
-            <img src={LOGO} className={`overflow-hidden transition-all ${expanded?"w-36":"w-0"}`}/>
-            <button onClick={()=> setExpanded(curr=>!curr)} className='p-2 mb-1.5 hover:bg-[#f1f5f9]'>
-            {expanded ? <Menu/>: <Menu/>}
-            </button>
-            </div>
-           <SidebarContext.Provider value={{expanded}}>
-            <ul className='flex-1 px-3'>{children}</ul>
-           </SidebarContext.Provider>
-        </nav>
-    </aside>
-    </>
+  const menuItem = [{
+    path:'/',
+    name:"Dashboard",
+    icon:<LayoutDashboard size={20}/>
+  },{
+    path:'/profile',
+    name:"Profile",
+    icon:<UserCircle size={20}/>
+  },{
+    path:'/about',
+    name:"About",
+    icon:<LayoutDashboard size={20}/>
+  }
+]
+  return(
+    <div className="flex h-screen">
+    <div className={`bg-[#2563eb] border-r text-white h-full w-1/6 ${expanded?"w-36 mr-2":"w-20 mr-4"}`}>
+    <div className="flex items-center pt-6 pl-3">
+    <img src={LOGO} className={`overflow-hidden transition-all ${expanded?"w-36 mr-2":"w-0 mr-0"}`}/>
+    <button onClick={()=> setExpanded(curr=>!curr)} className="p-1.5 mb-1.5 ">{expanded ? <Menu/>:<Menu/>}</button> 
+    </div>
+     {
+      menuItem.map((item,index)=>(
+       <NavLink to = {item.path} key={index} className="flex text-white pt-1.5 pb-1.5 pl-4 pr-4 gap-4 transition-all hover:bg-[#1d4ed8] hover:transition-all" activeclassname = 'bg-[#1d4ed8] text-white'>
+        <div className="">{item.icon}</div>
+        <div className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3":"w-0"}`}>{item.name}</div>
+       </NavLink>
+      ))
+     }
+    </div> 
+    <main className="w-full p-6">{children}</main>
+    </div>
   )
 }
-
 export default Sidebar;
-
-export function SidebarItem({ icon, text, active, alert }) {
-    const {expanded} = useContext(SidebarContext)
-    return (
-      <li className={`relative flex items-center py-2 px-3 my-1 font-medium
-        rounded-md cursor-pointer transition-colors group ${active ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-300" : "hover:bg-indigo-50 text-gray-600"}`}>
-        {icon}
-        <span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3":"w-0"}`}>{text}</span>
-      </li>
-    )
-  } 
