@@ -22,7 +22,7 @@ function Sidebar({children}){
 ]
   return(
     <div className="flex h-screen">
-    <div className={`bg-[#2563eb] border-r text-white h-full w-1/6 ${expanded?"w-36 mr-2":"w-20 mr-4"}`}>
+    <div className={`bg-[#2563eb] border-r text-white h-full  ${expanded?"w-1/6 mr-2":"w-20 mr-4"}`}>
     <div className="flex items-center pt-6 pl-3">
     <img src={LOGO} className={`overflow-hidden transition-all ${expanded?"w-36 mr-4":"w-0 mr-0"}`}/>
     <button onClick={()=> setExpanded(curr=>!curr)} className="p-1.5 mb-1.5 ">{expanded ? <Menu/>:<Menu/>}</button> 
